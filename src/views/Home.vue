@@ -8,6 +8,8 @@
     <Rank></Rank>
     <Like></Like>
     <Floor></Floor>
+    <Floor></Floor>
+    <Brand></Brand>
   </div>
 </template>
 
@@ -19,9 +21,11 @@ import TodayRecommend from '@/components/TodayRecommend';
 import Rank from '@/components/Rank';
 import Like from '@/components/Like';
 import Floor from '@/components/Floor';
+import Brand from '@/components/Brand';
 export default {
   name: 'Home',
   components: {
+    Brand,
     Floor,
     Like,
     Rank,
