@@ -1,13 +1,6 @@
 <template>
 <div class="list-container clearfix">
-  <!-- 轮播图 -->
-  <div class="carousel-contain">
-    <div class="carousel-img" v-for="img in imgs" :key="img.id" v-show="img.id === imgs[current].id">
-      <img :src="img.url">
-    </div>
-    <div class="carousel-button-prev" @click="preImage"></div>
-    <div class="carousel-button-next" @click="nextImage"></div>
-  </div>
+  <Carousel class="carousel" :list="bannerList"></Carousel>
   <!-- 尚品汇快报 -->
   <div class="right-container">
     <div class="news">
@@ -81,72 +74,28 @@
 </template>
 
 <script>
+import {mapActions, mapState} from 'vuex';
+
 export default {
   name: "ListContainer",
-  data() {
-    return {
-      imgs: [
-        {id: "001", url: require('../assets/images/home/banner1.jpg')},
-        {id: "002", url: require('../assets/images/home/banner2.jpg')},
-        {id: "003", url: require('../assets/images/home/banner3.jpg')},
-        {id: "004", url: require('../assets/images/home/banner4.jpg')},
-      ],
-      current: 0
-    }
+  mounted() {
+    this.getBannerList()
+  },
+  computed: {
+    ...mapState('home', ['bannerList'])
   },
   methods: {
-    preImage(event) {
-      if (this.current > 0) {
-        console.log('this is:', this.current)
-        this.current--
-      } else {
-        this.current = this.imgs.length - 1
-      }
-    },
-    nextImage(event) {
-      if (this.current < this.imgs.length - 1) {
-        this.current++
-      } else {
-        this.current = 0
-      }
-    }
+    ...mapActions('home', ['getBannerList'])
   }
 }
 </script>
 
 <style scoped lang="less">
 .list-container {
-  // 轮播图样式
-  .carousel-contain {
+  .carousel {
     float: left;
-    position: relative;
     width: 730px;
-    height: 462px;
-
-    .carousel-img {
-      position: absolute;
-      margin-top: 5px;
-    }
-
-    .carousel-button-prev {
-      position: absolute;
-      z-index: 99;
-      width: 27px;
-      height: 44px;
-      top: 50%;
-      background-image: url("../assets/images/home/carousel-button-prev.svg");
-    }
-
-    .carousel-button-next {
-      position: absolute;
-      z-index: 99;
-      width: 27px;
-      height: 44px;
-      top: 50%;
-      right: 0px;
-      background-image: url("../assets/images/home/carousel-button-next.svg");
-    }
-
+    margin-top: 5px;
   }
 
   // 快报样式

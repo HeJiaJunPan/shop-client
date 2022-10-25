@@ -2,109 +2,23 @@
 <div class="type-nav">
   <div class="nav-container w">
     <ul class="nav-list clearfix">
-      <li class="all-shop">
+      <li class="all-shop" @mouseenter="mouseEnter" @mouseleave="mouseLeave">
         <h2>全部商品分类</h2>
-        <ul class="category-list">
-          <li class="category-list-item">
-            <a href="#" class="category-title">图书、音像、数字商品</a>
+        <ul class="category-list" @click="goSearch" v-show="isShow">
+          <li class="category-list-item" v-for="category in categoryList.slice(0,15)" :key="category.categoryId">
+            <a href="" class="category-title" :data-categoryName="category.categoryName" :data-category1Id="category.categoryId">{{category.categoryName}}</a>
             <ul class="children-list">
-              <li class="children-list-item">
-                <a href="#">婚恋/两性</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">文学</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">经管</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">畅读VIP</a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="category-list-item">
-            <a href="#" class="category-title">家用电器</a>
-            <ul class="children-list">
-              <li class="children-list-item">
-                <a href="#">婚恋/两性</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">文学</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">经管</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">畅读VIP</a>
-              </li>
-            </ul>
-          </li>
-          <li class="category-list-item">
-            <a href="#" class="category-title">手机、数码、充值</a>
-            <ul class="children-list">
-              <li class="children-list-item">
-                <a href="#">婚恋/两性</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">文学</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">经管</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">畅读VIP</a>
-              </li>
-            </ul>
-          </li>
-          <li class="category-list-item">
-            <a href="#" class="category-title">电脑、办公</a>
-            <ul class="children-list">
-              <li class="children-list-item">
-                <a href="#">婚恋/两性</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">文学</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">经管</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">畅读VIP</a>
-              </li>
-            </ul>
-          </li>
-          <li class="category-list-item">
-            <a href="#" class="category-title">家居、家具、家装、厨具</a>
-            <ul class="children-list">
-              <li class="children-list-item">
-                <a href="#">婚恋/两性</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">文学</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">经管</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">畅读VIP</a>
-              </li>
-            </ul>
-          </li>
-          <li class="category-list-item">
-            <a href="#" class="category-title">服饰内衣</a>
-            <ul class="children-list">
-              <li class="children-list-item">
-                <a href="#">婚恋/两性</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">文学</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">经管</a>
-              </li>
-              <li class="children-list-item">
-                <a href="#">畅读VIP</a>
+              <li class="level-two clearfix" v-for="categoryChild in category.categoryChild" :key="categoryChild.categoryId">
+                  <h4 class="level-two-title">
+                    <a href="" :data-categoryName="categoryChild.categoryName" :data-category2Id="categoryChild.categoryId">
+                      {{categoryChild.categoryName}}
+                    </a>
+                  </h4>
+                <ul class="level-three clearfix">
+                    <li class="children-list-item" v-for="c in categoryChild.categoryChild" :key="c.categoryId">
+                      <a href="" :data-categoryName="c.categoryName" :data-category3Id="c.categoryId">{{c.categoryName}}</a>
+                    </li>
+                  </ul>
               </li>
             </ul>
           </li>
@@ -124,8 +38,60 @@
 </template>
 
 <script>
+import {mapState, mapActions} from 'vuex'
 export default {
-  name: 'TypeNav'
+  name: 'TypeNav',
+  data() {
+    return {
+      isShow: true
+    }
+  },
+  mounted() {
+    if (this.$route.path != '/') {
+      this.isShow = false
+    }
+    //this.$store.dispatch('home/getCategoryList')
+    this.getCategoryList()
+  },
+  computed: {
+    ...mapState('home', ['categoryList'])
+  },
+  methods: {
+    ...mapActions('home', {
+      getCategoryList: 'getCategoryList'
+    }),
+    goSearch(event) {
+      let node = event.target;
+      let {categoryname, category1id, category2id, category3id} = node.dataset
+      if (categoryname) {
+        let location = {name: 'search'}
+        let query = {categoryName: categoryname}
+        if (category1id) {
+          query.category1Id = category1id
+        } else if (category2id) {
+          query.category2Id = category2id
+        } else {
+          query.category3Id = category3id
+        }
+
+        if (this.$route.params) {
+          location.params = this.$route.params
+        }
+        location.query = query
+        this.$router.push(location)
+      }
+    },
+    mouseEnter(event) {
+      if (this.$route.path != '/') {
+        this.isShow = true
+      }
+    },
+    mouseLeave(event) {
+      if (this.$route.path != '/') {
+        this.isShow = false
+      }
+    }
+  }
 }
 </script>
 
@@ -200,12 +166,27 @@ export default {
           border: 1px solid #ddd;
 
           &:extend(.clearfix);
-          .children-list-item {
-            float: left;
-            padding: 0px 8px;
-          }
 
+          .level-two {
+            font-size: 12px;
+            line-height: 22px;
+            .level-two-title {
+              color: #333;
+              padding-right: 6px;
+              width: 54px;
+              //float: left;
+            }
+
+            .level-three {
+              //float: left;
+              .children-list-item {
+                float: left;
+                padding: 0px 8px;
+              }
+            }
+          }
         }
+
         .category-list-item:hover .children-list {
           display: block;
         }
