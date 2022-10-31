@@ -6,181 +6,32 @@
       <div class="bread clearfix">
         <h3 class="bread-title"><a href="#">全部结果</a> </h3>
         <ul class="bread-list">
-          <li class="bread-item">手机<span>x</span></li>
-          <li class="bread-item">iphone<span>x</span></li>
-          <li class="bread-item">华为<span>x</span></li>
-          <li class="bread-item">OPPO<span>x</span></li>
+          <!-- 分类面包屑 -->
+          <li class="bread-item" v-if="searchParams.categoryName">
+            {{searchParams.categoryName}}<span @click="removeCategoryName">x</span>
+          </li>
+          <!-- 关键字面包屑 -->
+          <li class="bread-item" v-if="searchParams.keyword">
+            {{searchParams.keyword}}<span @click="removeKeyword">x</span>
+          </li>
+          <!-- 品牌面包屑 -->
+          <li class="bread-item" v-if="searchParams.trademark">
+            {{searchParams.trademark.split(':')[1]}}}<span @click="removeTrademark">x</span>
+          </li>
+          <!-- 平台售卖的属性值展示面包屑 -->
+          <li class="bread-item" v-for="(prop,index) in searchParams.props" :key="index">
+            {{prop.split(':')[1]}}<span @click="removeAttr(index)">x</span></li>
         </ul>
       </div>
-      <!-- selector -->
-      <ul class="selector">
-        <li class="item">
-          <div class="key">品牌</div>
-          <div class="value">
-            <ul class="logo-list">
-              <li>索尼（SONY）</li>
-              <li>TCL</li>
-              <li>长虹（CHANGHONG）</li>
-              <li>飞利浦（PHILIPS）</li>
-              <li>风行电视</li>
-              <li><img src="/images/search/phone06.png"></li>
-              <li><img src="/images/search/phone07.png"></li>
-              <li><img src="/images/search/phone08.png"></li>
-              <li><img src="/images/search/phone09.png"></li>
-              <li><img src="/images/search/phone10.png"></li>
-              <li><img src="/images/search/phone11.png"></li>
-              <li><img src="/images/search/phone12.png"></li>
-              <li><img src="/images/search/phone12.png"></li>
-              <li><img src="/images/search/phone14.png"></li>
-              <li><img src="/images/search/phone01.png"></li>
-              <li><img src="/images/search/phone06.png"></li>
-              <li><img src="/images/search/phone07.png"></li>
-              <li><img src="/images/search/phone02.png"></li>
-            </ul>
-          </div>
-          <div class="ext">
-            <a href="#" class="button">多选</a>
-            <a href="#">更多</a>
-          </div>
-        </li>
-        <li class="item">
-          <div class="key">网络制式</div>
-          <div class="value">
-            <ul class="type-list">
-              <li>
-                <a>GSM（移动/联通2G）</a>
-              </li>
-              <li>
-                <a>电信2G</a>
-              </li>
-              <li>
-                <a>电信3G</a>
-              </li>
-              <li>
-                <a>移动3G</a>
-              </li>
-              <li>
-                <a>联通3G</a>
-              </li>
-              <li>
-                <a>联通4G</a>
-              </li>
-              <li>
-                <a>电信3G</a>
-              </li>
-              <li>
-                <a>移动3G</a>
-              </li>
-              <li>
-                <a>联通3G</a>
-              </li>
-              <li>
-                <a>联通4G</a>
-              </li>
-            </ul>
-          </div>
-          <div class="ext">
-          </div>
-        </li>
-        <li class="item">
-          <div class="key">显示屏尺寸</div>
-          <div class="value">
-            <ul class="type-list">
-              <li>
-                <a>4.0-4.9英寸</a>
-              </li>
-              <li>
-                <a>4.0-4.9英寸</a>
-              </li>
-            </ul>
-          </div>
-          <div class="ext">
-          </div>
-        </li>
-        <li class="item">
-          <div class="key">摄像头像素</div>
-          <div class="value">
-            <ul class="type-list">
-              <li>
-                <a>1200万以上</a>
-              </li>
-              <li>
-                <a>800-1199万</a>
-              </li>
-              <li>
-                <a>1200-1599万</a>
-              </li>
-              <li>
-                <a>1600万以上</a>
-              </li>
-              <li>
-                <a>无摄像头</a>
-              </li>
-            </ul>
-          </div>
-          <div class="ext">
-          </div>
-        </li>
-        <li class="item">
-          <div class="key">价格</div>
-          <div class="value">
-            <ul class="type-list">
-              <li>
-                <a>0-500元</a>
-              </li>
-              <li>
-                <a>500-1000元</a>
-              </li>
-              <li>
-                <a>1000-1500元</a>
-              </li>
-              <li>
-                <a>1500-2000元</a>
-              </li>
-              <li>
-                <a>2000-3000元 </a>
-              </li>
-              <li>
-                <a>3000元以上</a>
-              </li>
-            </ul>
-          </div>
-          <div class="ext">
-          </div>
-        </li>
-        <li class="item">
-          <div class="key">更多筛选项</div>
-          <div class="value">
-            <ul class="type-list">
-              <li>
-                <a>特点</a>
-              </li>
-              <li>
-                <a>系统</a>
-              </li>
-              <li>
-                <a>手机内存 </a>
-              </li>
-              <li>
-                <a>单卡双卡</a>
-              </li>
-              <li>
-                <a>其他</a>
-              </li>
-            </ul>
-          </div>
-          <div class="ext">
-          </div>
-        </li>
-      </ul>
+      <Selector @trademarkInfo="trademarkInfoHandle" @attrInfo="attrInfoHandle"></Selector>
       <!-- details -->
       <div class="details clearfix">
         <div class="detail-nav">
           <ul class="nav-list clearfix">
-            <li class="active">
-              <a href="#">综合</a>
+            <li :class="{active:firstOfOrder === '1'}" @click="changeOrder('1')">
+              <a href="#">综合<span v-show="firstOfOrder === '1'">{{twoOfOrder}}</span></a>
             </li>
-            <li>
+            <li >
               <a href="#">销量</a>
             </li>
             <li>
@@ -189,29 +40,24 @@
             <li>
               <a href="#">评价</a>
             </li>
-            <li>
-              <a href="#">价格⬆</a>
-            </li>
-            <li>
-              <a href="#">价格⬇</a>
+            <li :class="{active:firstOfOrder === '2'}" @click="changeOrder('2')">
+              <a href="#">价格<span v-show="firstOfOrder === '2'">{{twoOfOrder}}</span></a>
             </li>
           </ul>
         </div>
         <ul class="goods-list">
-          <li class="good">
+          <li class="good" v-for="good in goodsList" :key="good.id">
             <div class="img-wrap">
-              <a href="#">
-                <img src="../../public/images/search/mobile01.png">
+              <a href="#" @click="goDetail(good.id)">
+                <img :src="good.defaultImg">
               </a>
             </div>
             <h4 class="price">
-                <span>¥</span>6088.00
+                <span>¥</span>{{good.price}}
               </h4>
             <div class="desc">
-                <a href="" title="">
-                  Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)
-                </a>
-              </div>
+                <a href="" title="">{{good.title}}</a>
+            </div>
             <div class="comment">
                 <p>已有<span>2000</span>人评价</p>
               </div>
@@ -220,233 +66,37 @@
               <a href="" class="button-star">收藏</a>
             </div>
           </li>
-          <li class="good">
-            <div class="img-wrap">
-              <a href="#">
-                <img src="../../public/images/search/mobile01.png">
-              </a>
-            </div>
-            <h4 class="price">
-              <span>¥</span>6088.00
-            </h4>
-            <div class="desc">
-              <a href="" title="">
-                Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)
-              </a>
-            </div>
-            <div class="comment">
-              <p>已有<span>2000</span>人评价</p>
-            </div>
-            <div class="operate">
-              <a href="" class="button-shop">加入购物车</a>
-              <a href="" class="button-star">收藏</a>
-            </div>
-          </li>
-          <li class="good">
-            <div class="img-wrap">
-              <a href="#">
-                <img src="../../public/images/search/mobile01.png">
-              </a>
-            </div>
-            <h4 class="price">
-              <span>¥</span>6088.00
-            </h4>
-            <div class="desc">
-              <a href="" title="">
-                Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)
-              </a>
-            </div>
-            <div class="comment">
-              <p>已有<span>2000</span>人评价</p>
-            </div>
-            <div class="operate">
-              <a href="" class="button-shop">加入购物车</a>
-              <a href="" class="button-star">收藏</a>
-            </div>
-          </li>
-          <li class="good">
-            <div class="img-wrap">
-              <a href="#">
-                <img src="../../public/images/search/mobile01.png">
-              </a>
-            </div>
-            <h4 class="price">
-              <span>¥</span>6088.00
-            </h4>
-            <div class="desc">
-              <a href="" title="">
-                Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)
-              </a>
-            </div>
-            <div class="comment">
-              <p>已有<span>2000</span>人评价</p>
-            </div>
-            <div class="operate">
-              <a href="" class="button-shop">加入购物车</a>
-              <a href="" class="button-star">收藏</a>
-            </div>
-          </li>
-          <li class="good">
-            <div class="img-wrap">
-              <a href="#">
-                <img src="../../public/images/search/mobile01.png">
-              </a>
-            </div>
-            <h4 class="price">
-              <span>¥</span>6088.00
-            </h4>
-            <div class="desc">
-              <a href="" title="">
-                Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)
-              </a>
-            </div>
-            <div class="comment">
-              <p>已有<span>2000</span>人评价</p>
-            </div>
-            <div class="operate">
-              <a href="" class="button-shop">加入购物车</a>
-              <a href="" class="button-star">收藏</a>
-            </div>
-          </li>
-          <li class="good">
-            <div class="img-wrap">
-              <a href="#">
-                <img src="../../public/images/search/mobile01.png">
-              </a>
-            </div>
-            <h4 class="price">
-              <span>¥</span>6088.00
-            </h4>
-            <div class="desc">
-              <a href="" title="">
-                Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)
-              </a>
-            </div>
-            <div class="comment">
-              <p>已有<span>2000</span>人评价</p>
-            </div>
-            <div class="operate">
-              <a href="" class="button-shop">加入购物车</a>
-              <a href="" class="button-star">收藏</a>
-            </div>
-          </li>
-          <li class="good">
-            <div class="img-wrap">
-              <a href="#">
-                <img src="../../public/images/search/mobile01.png">
-              </a>
-            </div>
-            <h4 class="price">
-              <span>¥</span>6088.00
-            </h4>
-            <div class="desc">
-              <a href="" title="">
-                Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)
-              </a>
-            </div>
-            <div class="comment">
-              <p>已有<span>2000</span>人评价</p>
-            </div>
-            <div class="operate">
-              <a href="" class="button-shop">加入购物车</a>
-              <a href="" class="button-star">收藏</a>
-            </div>
-          </li>
-          <li class="good">
-            <div class="img-wrap">
-              <a href="#">
-                <img src="../../public/images/search/mobile01.png">
-              </a>
-            </div>
-            <h4 class="price">
-              <span>¥</span>6088.00
-            </h4>
-            <div class="desc">
-              <a href="" title="">
-                Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)
-              </a>
-            </div>
-            <div class="comment">
-              <p>已有<span>2000</span>人评价</p>
-            </div>
-            <div class="operate">
-              <a href="" class="button-shop">加入购物车</a>
-              <a href="" class="button-star">收藏</a>
-            </div>
-          </li>
-          <li class="good">
-            <div class="img-wrap">
-              <a href="#">
-                <img src="../../public/images/search/mobile01.png">
-              </a>
-            </div>
-            <h4 class="price">
-              <span>¥</span>6088.00
-            </h4>
-            <div class="desc">
-              <a href="" title="">
-                Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)
-              </a>
-            </div>
-            <div class="comment">
-              <p>已有<span>2000</span>人评价</p>
-            </div>
-            <div class="operate">
-              <a href="" class="button-shop">加入购物车</a>
-              <a href="" class="button-star">收藏</a>
-            </div>
-          </li>
-          <li class="good">
-            <div class="img-wrap">
-              <a href="#">
-                <img src="../../public/images/search/mobile01.png">
-              </a>
-            </div>
-            <h4 class="price">
-              <span>¥</span>6088.00
-            </h4>
-            <div class="desc">
-              <a href="" title="">
-                Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)
-              </a>
-            </div>
-            <div class="comment">
-              <p>已有<span>2000</span>人评价</p>
-            </div>
-            <div class="operate">
-              <a href="" class="button-shop">加入购物车</a>
-              <a href="" class="button-star">收藏</a>
-            </div>
-          </li>
         </ul>
-        <div class="page clearfix">
-          <ul class="clearfix list">
-            <li class="prev disabled">
-              <a href="#">«上一页</a>
-            </li>
-            <li class="active">
-              <a href="#">1</a>
-            </li>
-            <li>
-              <a href="#">2</a>
-            </li>
-            <li>
-              <a href="#">3</a>
-            </li>
-            <li>
-              <a href="#">4</a>
-            </li>
-            <li>
-              <a href="#">5</a>
-            </li>
-            <li class="dotted"><span>...</span></li>
-            <li class="next">
-              <a href="#">下一页»</a>
-            </li>
-          </ul>
-          <div class="total">共<span>10</span>页</div>
-        </div>
+        <Pagination class="page-wrapper" :pageNo="searchParams.pageNo" :total="91 || searchList.total" :pageSize="searchParams.pageSize" :continues="5" @pageNoInfo="changePageNo"></Pagination>
+<!--        <div class="page clearfix">-->
+<!--          <ul class="clearfix list">-->
+<!--            <li class="prev disabled">-->
+<!--              <a href="#">«上一页</a>-->
+<!--            </li>-->
+<!--            <li class="active">-->
+<!--              <a href="#">1</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <a href="#">2</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <a href="#">3</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <a href="#">4</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <a href="#">5</a>-->
+<!--            </li>-->
+<!--            <li class="dotted"><span>...</span></li>-->
+<!--            <li class="next">-->
+<!--              <a href="#">下一页»</a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--          <div class="total">共<span>10</span>页</div>-->
+<!--        </div>-->
       </div>
+
 
       <div class="hot-sale">
         <h4 class="title">热卖商品</h4>
@@ -498,8 +148,136 @@
 </template>
 
 <script>
+import {mapActions, mapState, mapGetters} from 'vuex';
+import Selector from '@/components/Selector';
+import Pagination from '@/components/Pagination';
+
 export default {
-  name: 'Search'
+  name: 'Search',
+  components: {Pagination, Selector},
+  data() {
+    return {
+      searchParams: {
+        category1Id: '',
+        category2Id: '',
+        category3Id: '',
+        categoryName: '',
+        keyword: '',
+        order: '1:desc',
+        pageNo: 1,
+        pageSize: 10,
+        props: [],
+        trademark: ''
+      },
+    }
+  },
+  beforeMount() {
+    let query = this.$route.query
+    let params = this.$route.params
+    Object.assign(this.searchParams, query, params)
+  },
+  mounted() {
+    this.getData(this.searchParams)
+  },
+  computed: {
+    ...mapState('search', ['searchList']),
+    ...mapGetters('search' ,['goodsList']),
+    firstOfOrder() {
+      return this.searchParams.order.split(':')[0]
+    },
+    twoOfOrder() {
+      if (this.searchParams.order.split(':')[1] === 'desc') {
+        return '⬇'
+      } else {
+        return '⬆'
+      }
+    }
+  },
+  methods: {
+    ...mapActions('search', ['getSearchList']),
+    getData(params) {
+      this.getSearchList(params)
+    },
+    removeCategoryName(event) {
+      // 1. 删除分类名后，搜索信息里面同分类相关的值清空
+      this.searchParams.categoryName = undefined
+      this.searchParams.category1Id = undefined
+      this.searchParams.category2Id = undefined
+      this.searchParams.category3Id = undefined
+      // 2. 重新请求数据
+      this.getData(this.searchParams)
+      // 3. 通过重定向，实现地址栏url变化
+      this.$router.push({
+        name: 'search',
+        params: this.$route.params
+      })
+    },
+    removeKeyword(event) {
+      // 修改搜索信息
+      this.searchParams.keyword = undefined
+      // 重新请求数据
+      this.getData(this.searchParams)
+      // 清空搜索栏
+      this.$bus.$emit('clear')
+      // 修改地址栏信息
+      this.$router.push({
+        name: 'search',
+        query: this.$route.query
+      })
+    },
+    trademarkInfoHandle(trademark, event) {
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`
+      this.getData(this.searchParams)
+    },
+    removeTrademark(event) {
+      this.searchParams.trademark = undefined
+      this.getData(this.searchParams)
+    },
+    attrInfoHandle(attr, attrValue, event) {
+      let prop = `${attr.attrId}:${attrValue}:${attr.attrName}`
+      if (this.searchParams.props.indexOf(prop) === -1) {
+        this.searchParams.props.push(prop)
+        this.getData(this.searchParams)
+      }
+    },
+    removeAttr(index, event) {
+      console.log(index, this.searchParams.props)
+      this.searchParams.props.splice(index, 1)
+      console.log(this.searchParams.props)
+      this.getData(this.searchParams)
+    },
+    changeOrder(flag, event) {
+      let newOrder;
+      if (this.searchParams.order.split(':')[0] === flag) {
+        newOrder = `${flag}:${this.searchParams.order.split(':')[1] === 'desc' ? 'asc':'desc'}`
+      } else {
+        newOrder = `${flag}:desc`
+      }
+      this.searchParams.order = newOrder
+      this.getData(this.searchParams)
+    },
+    changePageNo(pageNo, event) {
+      this.searchParams.pageNo = pageNo
+      this.getData(this.searchParams)
+    },
+    goDetail(productId, event) {
+      this.$router.push({
+        name: 'detail',
+        params: {
+          productId: productId
+        }
+      })
+    }
+  },
+  watch: {
+    $route(newValue, oldValue) {
+      Object.assign(this.searchParams, this.$route.query, this.$route.params)
+      this.getData(this.searchParams)
+      this.searchParams.category1Id = undefined
+      this.searchParams.category2Id = undefined
+      this.searchParams.category3Id = undefined
+    }
+  }
 }
 </script>
 
@@ -527,69 +305,6 @@ export default {
       span {
         margin-left: 10px;
         font-size: 14px;
-      }
-    }
-  }
-}
-
-.selector {
-  border: 1px solid #ddd;
-  margin-bottom: 5px;
-  .item {
-    display: flex;
-    border-top: 1px solid #ddd;
-    .key {
-      width: 100px;
-      background-color: #f1f1f1;
-      text-align: right;
-      padding: 10px 10px 0px 15px;
-    }
-    .value {
-      width: 968px;
-      padding: 10px 0px 10px 15px;
-      .logo-list {
-        display: flex;
-        flex-wrap: wrap;
-        border-right: 1px solid #e4e4e4;
-        border-bottom: 1px solid #e4e4e4;
-        li {
-          width: (1/9)*100%;
-          height: 52px;
-          line-height: 52px;
-          border-top: 1px solid #e4e4e4;
-          border-left: 1px solid #e4e4e4;
-          margin-left: -1px;
-          overflow: hidden;
-          font-size: 14px;
-          color: #e1251b;
-          font-style: italic;
-          text-align: center;
-          white-space: nowrap;
-          font-weight: 700;
-          img {
-            height: 52px;
-          }
-        }
-      }
-      .type-list {
-        display: flex;
-        li {
-          margin-right: 30px;
-          line-height: 26px;
-          color: #666666;
-        }
-      }
-    }
-    .ext {
-      padding: 11px 0px 0px 5px;
-      a {
-        text-decoration: none;
-        color: #666666;
-        padding: 0px 5px;
-      }
-
-      .button {
-        border: 1px solid #d5d5d5;
       }
     }
   }
@@ -735,6 +450,11 @@ export default {
     }
 
   }
+  .page-wrapper {
+    float: right;
+    margin: 18px 0px;
+  }
+
 }
 
 .hot-sale {

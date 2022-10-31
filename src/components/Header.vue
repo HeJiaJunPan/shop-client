@@ -55,8 +55,8 @@
 
       <div class="search">
         <form action="#" class="search-form">
-          <input type="text" name="keyword" class="search-input">
-          <button type="button" name="submit" value="submit" class="search-button">搜索</button>
+          <input type="text" name="keyword" class="search-input" v-model="keyword">
+          <button type="button" name="submit" value="submit" class="search-button" @click="goSearch">搜索</button>
         </form>
       </div>
     </div>
@@ -66,7 +66,33 @@
 
 <script>
 export default {
-  name: 'Header'
+  name: 'Header',
+  data() {
+    return {
+      keyword: ''
+    }
+  },
+  mounted() {
+    this.$bus.$on('clear',() => {
+      this.keyword = ''
+    })
+  },
+  methods: {
+    goSearch(event) {
+      console.log(this.keyword)
+      let location = {
+        name: 'search',
+        params: {
+          keyword: this.keyword || undefined
+        }
+      }
+      if (this.$route.query) {
+        location.query = this.$route.query
+      }
+      console.log(location)
+      this.$router.push(location)
+    }
+  }
 }
 </script>
 

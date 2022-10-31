@@ -20,3 +20,12 @@ export const getFloorList = () => {
         url: '/floor'
     })
 }
+
+export const getSearchList = (params) => {
+    return requests({
+        method: 'post',
+        url: '/list',
+        baseURL: '/api',
+        data: params
+    })
+}

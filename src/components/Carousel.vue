@@ -22,7 +22,6 @@ export default {
       immediate: true,
       handler() {
         this.$nextTick(()=> {
-          console.log('------------------')
           new Swiper(this.$refs.carousel, {
             autoplay: true,
             loop: true,

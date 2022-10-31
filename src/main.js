@@ -13,6 +13,9 @@ Vue.component(Carousel.name, Carousel)
 Vue.component(TypeNav.name, TypeNav)
 
 new Vue({
+  beforeCreate() {
+    Vue.prototype.$bus = this
+  },
   router,
   store,
   render: h => h(App)

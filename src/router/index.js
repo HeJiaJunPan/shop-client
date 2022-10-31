@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import Home from '@/views/Home';
 import Search from '@/views/Search';
+import Detail from '@/views/Detail';
 
 Vue.use(VueRouter)
 
@@ -13,9 +14,14 @@ const routes = [
     component: Home
   },
   {
-    path: '/search',
+    path: '/search/:keyword?',
     name: 'search',
     component: Search
+  },
+  {
+    path: '/detail/:productId?',
+    name: 'detail',
+    component: Detail
   }
 ]
 
