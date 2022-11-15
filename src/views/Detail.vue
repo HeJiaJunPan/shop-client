@@ -6,43 +6,28 @@
     <div class="main">
       <!-- 路径导航 -->
       <div class="path-nav">
-        <a href="#">手机、数码、通讯</a>
-        <a href="#">手机</a>
-        <a href="#">Apple苹果</a>
-        <a href="#">iphone 6S系类</a>
+        <a href="#">{{categoryView.category1Name}}</a>
+        <a href="#">{{categoryView.category2Name}}</a>
+        <a href="#">{{categoryView.category3Name}}</a>
       </div>
       <!-- 商品内容 -->
       <div class="main-content clearfix">
         <!-- 图片区域 -->
           <div class="img-wrapper">
-            <div class="img-big">
-              <img src="../../public/images/detail/s1.png">
-            </div>
-            <div class="img-small clearfix">
-              <a href="#" class="prev"><</a>
-              <ul class="img-list clearfix">
-                <li class="img-item"><img src="../../public/images/detail/s1.png"> </li>
-                <li class="img-item"><img src="../../public/images/detail/s1.png"> </li>
-                <li class="img-item"><img src="../../public/images/detail/s1.png"> </li>
-                <li class="img-item"><img src="../../public/images/detail/s1.png"> </li>
-                <li class="img-item"><img src="../../public/images/detail/s1.png"> </li>
-                <li class="img-item"><img src="../../public/images/detail/s1.png"> </li>
-                <li class="img-item"><img src="../../public/images/detail/s1.png"> </li>
-              </ul>
-              <a href="" class="next">></a>
-            </div>
+            <Zoom :skuImageList="skuImageList"></Zoom>
+            <ImageList :skuImageList="skuImageList"></ImageList>
           </div>
         <!-- 文字区域 -->
         <div class="info-wrapper">
           <div class="good-detail">
-            <h3 class="sku-name">Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机</h3>
-            <p class="news">推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返</p>
+            <h3 class="sku-name">{{skuInfo.skuName}}</h3>
+            <p class="news">{{skuInfo.skuDesc}}</p>
             <div class="priceAreal">
               <div class="priceAreal-one clearfix">
                 <div class="title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</div>
                 <div class="price">
                   <span class="price-unit">¥</span>
-                  <span class="price-value">21196</span>
+                  <span class="price-value">{{skuInfo.price}}</span>
                   <span class="price-additional">降价通知</span>
                 </div>
                 <div class="remark">
@@ -74,33 +59,16 @@
               <div class="choosed">
                 <div class="choosed-item">金色<span>X</span></div>
               </div>
-              <dl class="select-item clearfix">
-                <dt>选择颜色</dt>
-                <dd>金色</dd>
-                <dd>金色</dd>
-                <dd>金色</dd>
-                <dd>金色</dd>
-              </dl>
-              <dl class="select-item clearfix">
-                <dt>选择颜色</dt>
-                <dd>金色</dd>
-                <dd>金色</dd>
-                <dd>金色</dd>
-                <dd>金色</dd>
-              </dl>
-              <dl class="select-item clearfix">
-                <dt>选择颜色</dt>
-                <dd>金色</dd>
-                <dd>金色</dd>
-                <dd>金色</dd>
-                <dd>金色</dd>
-              </dl>
-              <dl class="select-item clearfix">
-                <dt>选择颜色</dt>
-                <dd>金色</dd>
-                <dd>金色</dd>
-                <dd>金色</dd>
-                <dd>金色</dd>
+              <dl class="select-item clearfix" v-for="spuSaleAttr in spuSaleAttrList" :key="spuSaleAttr.id">
+                <dt>{{spuSaleAttr.saleAttrName}}</dt>
+                <dd
+                    v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
+                    :key="spuSaleAttrValue.id"
+                    :class="{active: spuSaleAttrValue.isChecked == 1}"
+                    @click="changeActive(spuSaleAttrValue, spuSaleAttr.spuSaleAttrValueList)"
+                >
+                  {{spuSaleAttrValue.saleAttrValueName}}
+                </dd>
               </dl>
             </div>
             <div class="shop-cart clearfix">
@@ -310,8 +278,28 @@
 </template>
 
 <script>
+import {mapActions, mapGetters} from 'vuex';
+import ImageList from '@/components/ImageList';
+import Zoom from '@/components/Zoom';
+
 export default {
-  name: "Detail"
+  name: "Detail",
+  components: {Zoom, ImageList},
+  mounted() {
+    this.getGoodInfo(this.$route.params.productId)
+  },
+  computed: {
+    ...mapGetters('detail', ['categoryView', 'skuInfo', 'skuImageList', 'spuSaleAttrList'])
+  },
+  methods: {
+    ...mapActions('detail', ['getGoodInfo']),
+    changeActive(spuSaleAttrValue, spuSaleAttrValueList) {
+      spuSaleAttrValueList.forEach((item) => {
+        item.isChecked = 0
+      })
+      spuSaleAttrValue.isChecked = 1
+    }
+  }
 }
 </script>
 
@@ -338,62 +326,6 @@ export default {
 
     .img-wrapper {
       float: left;
-      width: 400px;
-
-      .img-big {
-        height: 400px;
-        border: 1px solid #DFDFDF;
-        img {
-          width: 100%;
-        }
-      }
-      .img-small {
-        margin-top: 5px;
-        width: 400px;
-        .prev {
-          float: left;
-          width: 10px;
-          height: 54px;
-          margin-right: 4px;
-          line-height: 54px;
-          text-align: center;
-          border: 1px solid #ccc;
-          background-color: #EBEBEB;
-          cursor: pointer;
-          text-decoration: none;
-          color: #666;
-        }
-        .next {
-          float: right;
-          width: 10px;
-          height: 54px;
-          line-height: 54px;
-          text-align: center;
-          border: 1px solid #ccc;
-          background-color: #EBEBEB;
-          cursor: pointer;
-          text-decoration: none;
-          color: #666;
-        }
-        .img-list {
-          float: left;
-          width: 372px;
-          height: 56px;
-          overflow: hidden;
-          .img-item {
-            float: left;
-            width: 50px;
-            height: 50px;
-            padding: 2px;
-            border: 1px solid #CCC;
-            margin-right: 20px;
-
-            img {
-              width: 100%;
-            }
-          }
-        }
-      }
     }
     .info-wrapper {
       float: right;
@@ -514,6 +446,11 @@ export default {
               border-bottom: 1px solid #eee;
               border-left: 1px solid #bbb;
             }
+            .active {
+              color: green;
+              border: 1px solid green;
+            }
+
           }
         }
         .shop-cart {

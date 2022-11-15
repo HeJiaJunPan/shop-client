@@ -29,3 +29,11 @@ export const getSearchList = (params) => {
         data: params
     })
 }
+
+export const getGoodInfo = (skuId) => {
+    return requests({
+        method: 'get',
+        url: `/item/${skuId}`,
+        baseURL: '/api'
+    })
+}
