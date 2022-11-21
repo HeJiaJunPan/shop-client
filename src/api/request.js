@@ -1,5 +1,6 @@
 import axios from 'axios';
 import nprogress from 'nprogress'
+import {getUUID} from '@/utils/userToken'
 
 import 'nprogress/nprogress.css'
 const requests = axios.create({
@@ -8,6 +9,8 @@ const requests = axios.create({
 })
 
 requests.interceptors.request.use(configs => {
+    // 为游客添加临时token
+    configs.headers.userTempId = getUUID()
     nprogress.start()
     return configs
 })

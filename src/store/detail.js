@@ -1,4 +1,4 @@
-import {getGoodInfo} from '@/api';
+import {addToCart, getGoodInfo} from '@/api';
 
 export default {
     namespaced: true,
@@ -15,6 +15,14 @@ export default {
             let result = await getGoodInfo(data)
             if (result.code === 200) {
                 context.commit('getGoodInfo', result.data)
+            }
+        },
+        async addToCart(context, data) {
+            let result = await addToCart(data.skuId, data.skuNum)
+            if (result.code === 200) {
+                return Promise.resolve('success')
+            } else {
+                return Promise.reject(new Error('fail'))
             }
         }
     },

@@ -48,7 +48,7 @@
         <ul class="goods-list">
           <li class="good" v-for="good in goodsList" :key="good.id">
             <div class="img-wrap">
-              <a href="#" @click="goDetail(good.id)">
+              <a href="javascript:;" @click="goDetail(good.id)">
                 <img :src="good.defaultImg">
               </a>
             </div>

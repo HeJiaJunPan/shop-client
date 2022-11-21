@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Home from '@/views/Home';
 import Search from '@/views/Search';
 import Detail from '@/views/Detail';
+import Cart from '@/views/Cart';
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,11 @@ const routes = [
     path: '/detail/:productId?',
     name: 'detail',
     component: Detail
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: Cart
   }
 ]
 

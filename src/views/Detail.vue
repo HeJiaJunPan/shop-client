@@ -73,12 +73,12 @@
             </div>
             <div class="shop-cart clearfix">
               <div class="controls">
-                <input autocomplete="off" value="1">
-                <a href="" class="plus">+</a>
-                <a href="" class="reduce">-</a>
+                <input autocomplete="off" v-model="skuNum" @change="skuNumChange">
+                <a href="javascript:;" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:;" class="reduce" @click="skuNum > 1 ? skuNum-- : (skuNum = 1)">-</a>
               </div>
               <div class="cart">
-                <a href="#">加入购物车</a>
+                <a href="javascript:;" @click="addCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -285,6 +285,11 @@ import Zoom from '@/components/Zoom';
 export default {
   name: "Detail",
   components: {Zoom, ImageList},
+  data() {
+    return {
+      skuNum: 1
+    }
+  },
   mounted() {
     this.getGoodInfo(this.$route.params.productId)
   },
@@ -292,12 +297,42 @@ export default {
     ...mapGetters('detail', ['categoryView', 'skuInfo', 'skuImageList', 'spuSaleAttrList'])
   },
   methods: {
-    ...mapActions('detail', ['getGoodInfo']),
+    ...mapActions('detail', ['getGoodInfo', 'addToCart']),
     changeActive(spuSaleAttrValue, spuSaleAttrValueList) {
       spuSaleAttrValueList.forEach((item) => {
         item.isChecked = 0
       })
       spuSaleAttrValue.isChecked = 1
+    },
+    skuNumChange(event) {
+      let value = event.target.value * 1
+      // 如果输入值不是数值或数值小于1，则显示1
+      if (isNaN(value) || value < 1) {
+        this.skuNum = 1
+      } else {
+        this.skuNum = parseInt(value)
+      }
+    },
+    async addCart(event) {
+      try {
+        // 发送请求
+        await this.addToCart({
+          skuId: this.$route.params.productId,
+          skuNum: this.skuNum
+        })
+        // 商品信息通过会话储存传递给购物车页面，避免再次请求
+        sessionStorage.setItem('skuinfo', JSON.stringify(this.skuInfo))
+        // 路由跳转到购物车详情页面
+        this.$router.push({
+          name: 'cart',
+          query: {
+            skuNum: this.skuNum
+          }
+        })
+      } catch (error) {
+        // 处理失败请求
+        alert('添加购物车失败，请重新添加！')
+      }
     }
   }
 }
