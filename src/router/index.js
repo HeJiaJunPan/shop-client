@@ -5,6 +5,7 @@ import Home from '@/views/Home';
 import Search from '@/views/Search';
 import Detail from '@/views/Detail';
 import Cart from '@/views/Cart';
+import Regist from '@/views/Regist';
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes = [
     path: '/cart',
     name: 'cart',
     component: Cart
+  },
+  {
+    path: '/regist',
+    name: 'regist',
+    component: Regist
   }
 ]
 
