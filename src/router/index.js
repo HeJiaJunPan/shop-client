@@ -6,6 +6,7 @@ import Search from '@/views/Search';
 import Detail from '@/views/Detail';
 import Cart from '@/views/Cart';
 import Regist from '@/views/Regist';
+import Login from '@/views/Login';
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,11 @@ const routes = [
     path: '/regist',
     name: 'regist',
     component: Regist
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
   }
 ]
 
