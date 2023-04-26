@@ -7,31 +7,31 @@
   <div class="regist-box">
     <div class="form-item">
       <label>手机号:</label>
-      <input type="text" name="photo" placeholder="请输入手机号码">
+      <input type="text" name="photo" v-model="phone" placeholder="请输入手机号码">
       <span class="error">错误提示信息</span>
     </div>
     <div class="form-item">
       <label>验证码:</label>
-      <input type="text" name="code" placeholder="请输入验证码">
-      <button @click="getCode">获取验证码</button>
+      <input type="text" name="code" v-model="code" placeholder="请输入验证码">
+      <button @click="getCodeByPhone">获取验证码</button>
       <span class="error">错误提示信息</span>
     </div>
     <div class="form-item">
       <label>登录密码:</label>
-      <input type="text" name="password" placeholder="请输入密码">
+      <input type="text" name="password" v-model="password" placeholder="请输入密码">
       <span class="error">错误提示信息</span>
     </div>
     <div class="form-item">
       <label>确认密码:</label>
-      <input type="text" name="pwd" placeholder="请再次确认密码">
+      <input type="text" name="pwd" v-model="pwd" placeholder="请再次确认密码">
       <span class="error">错误提示信息</span>
     </div>
     <div class="controls">
-      <input type="checkbox" name="agree">
+      <input type="checkbox" name="agree" v-model="agree">
       <span class="agree">同意协议并注册《尚品汇用户协议》</span>
       <span class="error">错误提示信息</span>
     </div>
-    <div class="button">完成注册</div>
+    <div class="button" @click="regist">完成注册</div>
   </div>
 </div>
 </template>
@@ -42,10 +42,38 @@ import {mapActions} from 'vuex';
 export default {
   name: "Regist",
   data() {
-    return {}
+    return {
+      'phone': '',
+      'code': '',
+      'password': '',
+      'pwd': '',
+      'agree': false
+    }
   },
   methods: {
-    ...mapActions('user', ['getCode'])
+    ...mapActions('user', ['getCode', 'userRegister']),
+    async getCodeByPhone() {
+      try {
+        let code = await this.getCode(this.phone)
+        this.code = this.$store.state.user.code
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async regist() {
+      console.log('--------------')
+      try {
+        let {phone, code, password} = this
+        await this.userRegister({
+          phone,
+          code,
+          password
+        })
+        this.$router.push('/login')
+      } catch (error) {
+        console.log(error.message)
+      }
+    }
   }
 }
 </script>
