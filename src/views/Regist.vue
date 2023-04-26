@@ -13,7 +13,7 @@
     <div class="form-item">
       <label>验证码:</label>
       <input type="text" name="code" placeholder="请输入验证码">
-      <img src="" alt="code">
+      <button @click="getCode">获取验证码</button>
       <span class="error">错误提示信息</span>
     </div>
     <div class="form-item">
@@ -37,8 +37,16 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+
 export default {
-  name: "Regist"
+  name: "Regist",
+  data() {
+    return {}
+  },
+  methods: {
+    ...mapActions('user', ['getCode'])
+  }
 }
 </script>
 

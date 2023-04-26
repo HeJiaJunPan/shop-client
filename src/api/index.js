@@ -69,3 +69,32 @@ export const updateCheckStatus = (cartId, isChecked) => {
         baseURL: '/api'
     })
 }
+
+export const getCode = (phone) => {
+    return requests({
+        method: 'get',
+        url: `/user/passport/sendCode/${phone}`,
+        baseURL: '/api'
+    })
+}
+
+export const register = (user) => {
+    return requests({
+        method: 'post',
+        url: '/user/passport/register',
+        data: user,
+        baseURL: '/api'
+    })
+}
+
+export const login = (phone, password) => {
+    return requests({
+        method: 'post',
+        url: '/user/passport/login',
+        data: {
+            phone: phone,
+            password: password
+        },
+        baseURL: '/api'
+    })
+}
