@@ -35,7 +35,7 @@ export default {
                 return Promise.reject(new Error('注册失败，请重新注册！'))
             }
         },
-        async userLogin(context, phone, password) {
+        async userLogin(context, {phone, password}) {
             let result = await login(phone, password)
             if (result.code === 200) {
                 context.commit('userLogin', result.data.token)

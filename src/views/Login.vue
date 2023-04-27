@@ -7,15 +7,15 @@
         <div class="tab active">账户登录</div>
       </div>
       <div class="content">
-        <form action="#">
+        <div id="form">
           <div class="input-box clearfix">
             <span class="icon"></span>
-            <input type="text" name="username">
+            <input type="text" name="username" v-model="phone">
             <span class="error-message">错误提示信息</span>
           </div>
           <div class="input-box clearfix">
             <span class="icon"></span>
-            <input type="text" name="password">
+            <input type="text" name="password" v-model="password">
             <span class="error-message">错误提示信息</span>
           </div>
           <div class="setting clearfix">
@@ -25,8 +25,8 @@
             </div>
             <span class="forget">忘记密码？</span>
           </div>
-          <button>登  录</button>
-        </form>
+          <button @click="login">登  录</button>
+        </div>
         <div class="call clearfix">
           <ul class="third-service clearfix">
             <li class="item">
@@ -51,8 +51,32 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+
 export default {
-  name: "Login"
+  name: "Login",
+  data() {
+    return {
+      phone: '',
+      password: ''
+    }
+  },
+  methods: {
+    ...mapActions('user', ['userLogin']),
+    async login() {
+      try {
+        await this.userLogin({
+          phone: this.phone,
+          password: this.password
+        })
+        // 重定向到首页或原先页面
+        let toPath = this.$route.query.redirect || '/'
+        this.$router.push(toPath)
+      } catch (error) {
+        alert(error.message)
+      }
+    }
+  }
 }
 </script>
 
@@ -104,7 +128,7 @@ export default {
       border: 1px solid #ddd;
       border-top: none;
 
-      form {
+      #form {
         margin: 15px 0px 18px 0px;
         font-size: 12px;
         line-height: 18px;
