@@ -1,0 +1,22 @@
+{
+  "code": 200,
+  "message": "成功",
+  "data": {
+    "id": 1442,
+    "loginName": "15838891234",
+    "nickName": "15838891234",
+    "passwd": "e10adc3949ba59abbe56e057f20f883e",
+    "name": "15838891234",
+    "phoneNum": "15838891234",
+    "email": null,
+    "headImg": "http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoj0hHXhgJNOTSOFsS4uZs8x1ConecaVOB8eIl115xmJZcT4oCicvia7wMEufibKtTLqiaJeanU2Lpg3w/132",
+    "userLevel": "1",
+    "status": 1,
+    "birthday": null,
+    "gender": "M",
+    "createTime": "2024-01-08 15:59:48",
+    "operateTime": "2024-01-08 15:59:48",
+    "openId": null
+  },
+  "ok": true
+}

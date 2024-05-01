@@ -1,11 +1,11 @@
-import {getCode, login, register} from '@/api';
-import {setToken} from '@/utils/tokenUtil';
+import {getCode, getUserInfo, login, logout, register} from '@/api';
+import {getToken, removeToken, setToken} from '@/utils/tokenUtil';
 
 export default {
     namespaced: true,
     state: {
         code: '',
-        token: '',
+        token: getToken(),
         userInfo: {}
     },
     mutations: {
@@ -14,6 +14,13 @@ export default {
         },
         userLogin(state, data) {
             state.token = data
+        },
+        getUserInfo(state, data) {
+            state.userInfo = data
+        },
+        clear(state) {
+            state.token = ''
+            state.userInfo = {}
         }
     },
     actions: {
@@ -43,6 +50,25 @@ export default {
                 return Promise.resolve('ok')
             } else {
                 return Promise.reject(new Error('登录失败，请重试！'))
+            }
+        },
+        async getUserInfo(context) {
+            let result = await getUserInfo()
+            if (result.code === 200) {
+                context.commit('getUserInfo', result.data)
+                return Provmise.resolve('ok')
+            } else {
+                return Promise.reject(new Error('获取用户信息失败'))
+            }
+        },
+        async logout(context) {
+            let result = await logout()
+            if (result.code === 200) {
+                context.commit('clear')
+                removeToken()
+                return Promise.resolve('ok')
+            } else {
+                return Promise.reject(new Error('账号登出失败!'))
             }
         }
     },

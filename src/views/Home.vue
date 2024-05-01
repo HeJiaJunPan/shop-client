@@ -30,12 +30,14 @@ export default {
   },
   mounted() {
     this.getFloorList()
+    this.getUserInfo()
   },
   computed: {
     ...mapState('home', ['floorList'])
   },
   methods: {
-    ...mapActions('home', ['getFloorList'])
+    ...mapActions('home', ['getFloorList']),
+    ...mapActions('user', ['getUserInfo'])
   }
 }
 </script>

@@ -98,3 +98,19 @@ export const login = (phone, password) => {
         baseURL: '/api'
     })
 }
+
+export const getUserInfo = () => {
+    return requests({
+        method: 'get',
+        url: '/user/passport/auth/getUserInfo',
+        baseURL: '/api'
+    })
+}
+
+export const logout = () => {
+    return requests({
+        method: 'get',
+        url: '/user/passport/logout',
+        baseURL: '/api'
+    })
+}

@@ -6,13 +6,23 @@
       <!-- header-top内容容器 -->
       <div class="header-top-container w clearfix">
         <!--  登录信息 -->
-        <ul class="login-info">
+        <ul class="login-info" v-if="!userInfo.name">
           <p>尚品汇欢迎您！</p>
           <li>
-            <a href="#">请 登录</a>
+            <a href="/login">请 登录</a>
           </li>
           <li>
-            <a href="#">免费注册</a>
+            <a href="/regist">免费注册</a>
+          </li>
+        </ul>
+
+        <ul class="login-info" v-else>
+          <p>尚品汇欢迎您！</p>
+          <li>
+            <a href="#">{{ userInfo.name }}</a>
+          </li>
+          <li>
+            <a href="#" @click="logoutHandler">登  出</a>
           </li>
         </ul>
 
@@ -65,6 +75,8 @@
 </template>
 
 <script>
+import {mapActions, mapState} from "vuex";
+
 export default {
   name: 'Header',
   data() {
@@ -78,6 +90,7 @@ export default {
     })
   },
   methods: {
+    ...mapActions('user', ['logout']),
     goSearch(event) {
       console.log(this.keyword)
       let location = {
@@ -91,7 +104,14 @@ export default {
       }
       console.log(location)
       this.$router.push(location)
+    },
+    async logoutHandler(event) {
+      await this.logout()
+      this.$router.push('/')
     }
+  },
+  computed: {
+    ...mapState('user', ['userInfo'])
   }
 }
 </script>
